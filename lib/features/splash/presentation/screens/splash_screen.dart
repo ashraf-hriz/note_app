@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/helper.dart';
 import '../../../auth/presentation/provider/auth_provider.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
+import '../../../notes/presentation/screens/home_screen.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         //push(context, FirstScreen());
          
         await auhProvider.getUserData();
+        pushAndRemoveUntil(navigatorKey.currentState!.context, const HomeScreen(),false);
 
         
       } else {

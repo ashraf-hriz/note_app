@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ThemeHelper {
@@ -6,6 +7,17 @@ class ThemeHelper {
 
   static Color primaryColor = HexColor('#DC54FE');
   static Color accentColor = HexColor('#8A02AE');
+
+  static const bgColor = Colors.white;//Color(0xFF252525);
+  static const tileColors = [
+    Color(0xFFffab91),
+    Color(0xFFffcc80),
+    Color(0xFFe6ee9b),
+    Color(0xFF80deea),
+    Color(0xFFcf93d9),
+    Color(0xFF80cbc4),
+    Color(0xFFf48fb1),
+  ];
 
   static InputDecoration textInputDecoration(
       [String lableText = "", String hintText = ""]) {
@@ -42,17 +54,16 @@ class ThemeHelper {
 
   static BoxDecoration inputBoxDecorationShaddowBorder() {
     return BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(100.0),
-      border: Border.all(color: Colors.grey.shade400),
-          
-      boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.1),
-        blurRadius: 20,
-        offset: const Offset(0, 5),
-      )
-    ]);
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(100.0),
+        border: Border.all(color: Colors.grey.shade400),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 5),
+          )
+        ]);
   }
 
   static BoxDecoration buttonBoxDecoration(BuildContext context,
@@ -97,7 +108,8 @@ class ThemeHelper {
     );
   }
 
-  static AlertDialog alartDialog(String title, String content, BuildContext context) {
+  static AlertDialog alartDialog(
+      String title, String content, BuildContext context) {
     return AlertDialog(
       title: Text(title),
       content: Text(content),
@@ -116,4 +128,28 @@ class ThemeHelper {
       ],
     );
   }
+
+ static TextStyle titleTextStyle = GoogleFonts.lato(
+    fontSize: 28,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
+  static TextStyle bodyTextStyle = GoogleFonts.lato(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
+  static TextStyle dateTextStyle = GoogleFonts.lato(
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    color: Colors.grey,
+  );
+
+  static TextStyle noteTitleTextStyle = GoogleFonts.lato(
+    fontSize: 22,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
 }
