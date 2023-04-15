@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:note_app/core/helper.dart';
+import 'package:note_app/features/auth/presentation/provider/auth_provider.dart';
+import 'package:note_app/features/notes/presentation/screens/add_note_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/widgets/loading_widget.dart';
 import '../../domain/entities/note_entity.dart';
+import '../provider/note_provider.dart';
 import '../widgets/icon_button.dart';
 import '../widgets/note_tile.dart';
 
@@ -35,6 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+       Provider.of<NoteProvider>(context,listen: false).getAllNotes();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Padding(
@@ -42,12 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
-            /* Get.to(
-              const AddNotePage(
-                note: null,
-              ),
-              transition: Transition.downToUp,
-            ); */
+            push(context, const AddNoteScreen(note: null));
           },
           child: const Icon(Icons.add),
         ),
@@ -79,7 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
             style: ThemeHelper.titleTextStyle.copyWith(fontSize: 32),
           ),
           MyIconButton(
-            onTap: () {},
+            onTap: () {
+              Provider.of<AuthProvider>(context, listen: false).logOut();
+            },
             icon: Icons.logout,
           ),
         ],
@@ -89,63 +103,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _body() {
     return Expanded(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: StaggeredGrid.count(
-          crossAxisCount: 4,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          axisDirection: AxisDirection.down,
-          children: [
-            for (int i = 0; i < Note.noteList.length; i++)
-              StaggeredGridTile.count(
-                  crossAxisCellCount: _tileCounts[i % 7][0],
-                  mainAxisCellCount: _tileCounts[i % 7][1],
-                  child: NoteTile(
-                    index: i,
-                    note: Note.noteList[i],
-                    tileType: _tileTypes[i % 7],
-                  ))
-          ]),
-      // itemCount: _notesController.noteList.length,
-      // itemBuilder: (context, index)
-      // {
-      //   return NoteTile(
-      //     tileType: _tileTypes[index % 7],
-      //     note: _notesController.noteList[index],
-      //   );
-      // },
-      // StaggeredGridTileBuilder: (int index) => _tileCounts[index % 7]);
-
-      // return StaggeredGridView.count(
-      //   crossAxisCount: 4,
-      //   StaggeredGridTiles: _StaggeredGridTiles,
-      //   mainAxisSpacing: 12,
-      //   crossAxisSpacing: 12,
-      //   children: _notesController.noteList
-      //       .map((n) => NoteTile(
-      //             note: n,
-      //           ))
-      //       .toList(),
-      // );
-
-      // ListView.builder(
-      //     itemCount: _notesController.noteList.length,
-      //     itemBuilder: (context, index) {
-      //       return NoteTile(
-      //         note: _notesController.noteList[index],
-      //       );
-      //     });
-
-      /* Obx(() {
-        if (_notesController.noteList.isNotEmpty) {
-          return 
-        } else {
-          return Center(
-            child: Text("Empty", style: ThemeHelper.titleTextStyle),
-          );
-        }
-      }), */
-    ));
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Consumer<NoteProvider>(builder: (context, noteProvider, _) {
+          return noteProvider.loading
+              ? const LoadingWidget()
+              : noteProvider.notesList.isNotEmpty
+                  ? StaggeredGrid.count(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      axisDirection: AxisDirection.down,
+                      children: [
+                        for (int i = 0; i < noteProvider.notesList.length; i++)
+                          StaggeredGridTile.count(
+                            crossAxisCellCount: _tileCounts[i % 7][0],
+                            mainAxisCellCount: _tileCounts[i % 7][1],
+                            child: NoteTile(
+                              index: i,
+                              note: noteProvider.notesList[i],
+                              tileType: _tileTypes[i % 7],
+                            ),
+                          ),
+                      ],
+                    )
+                  : Center(
+                      child: Text("Empty", style: ThemeHelper.titleTextStyle),
+                    );
+        }),
+      ),
+    );
   }
 }

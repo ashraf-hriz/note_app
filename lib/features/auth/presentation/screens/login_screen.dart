@@ -83,20 +83,22 @@ class _LoginPageState extends State<LoginPage> {
                                         context),
                                     child: ElevatedButton(
                                       style: ThemeHelper.buttonStyle(),
-                                      onPressed: authProvider.loading?null:() {
-                                        //After successful login we will redirect to profile page. Let's create profile page now
-                                        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-                                        if (authProvider
-                                            .loginFormKey.currentState!
-                                            .validate()) {
-                                          authProvider.signIn();
-                                        }
-                                      },
+                                      onPressed: authProvider.loading
+                                          ? null
+                                          : () {
+                                              if (authProvider
+                                                  .loginFormKey.currentState!
+                                                  .validate()) {
+                                                authProvider.signIn();
+                                              }
+                                            },
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             40, 10, 40, 10),
                                         child: Text(
-                                          authProvider.loading?'. . . .':'Sign In'.toUpperCase(),
+                                          authProvider.loading
+                                              ? '. . . .'
+                                              : 'Sign In'.toUpperCase(),
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,

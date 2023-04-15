@@ -1,15 +1,14 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:note_app/features/notes/presentation/provider/note_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/helper.dart';
 import '../../../auth/presentation/provider/auth_provider.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
 import '../../../notes/presentation/screens/home_screen.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,17 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 4), () async {
       var auhProvider = Provider.of<AuthProvider>(context, listen: false);
+      var noteProvider = Provider.of<NoteProvider>(context, listen: false);
       if (auhProvider.isSignIn()) {
-        //firebaseAuth.signOut();
-        //push(context, FirstScreen());
-         
         await auhProvider.getUserData();
-        pushAndRemoveUntil(navigatorKey.currentState!.context, const HomeScreen(),false);
+        await noteProvider.syncNoteData();
 
-        
+        pushAndRemoveUntil(
+            navigatorKey.currentState!.context, const HomeScreen(), false);
       } else {
-        pushAndRemoveUntil(context, const LoginPage(),false);
-      } 
+        pushAndRemoveUntil(context, const LoginPage(), false);
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

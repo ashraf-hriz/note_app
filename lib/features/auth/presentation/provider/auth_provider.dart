@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/features/auth/domain/usecases/get_userdata_usecase.dart';
 import 'package:note_app/features/auth/domain/usecases/signin_usecase.dart';
+import 'package:note_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:note_app/features/notes/presentation/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/error/failures.dart';
@@ -55,9 +57,9 @@ class AuthProvider extends ChangeNotifier {
       SnackBarMessage().showErrorSnackBar(message: message, context: navigatorKey.currentState!.context);
     }, (user) {
       userModel = user;
-       /* pushAndRemoveUntil(navigatorKey.currentState!.context,
-              const StudentHomeScreen(), false); */
-      SnackBarMessage().showSuccessSnackBar(message: 'succcess login', context: navigatorKey.currentState!.context);
+       pushAndRemoveUntil(navigatorKey.currentState!.context,
+              const HomeScreen(), false);
+      //SnackBarMessage().showSuccessSnackBar(message: 'succcess login', context: navigatorKey.currentState!.context);
     });
     loading = false;
   }
@@ -76,9 +78,9 @@ class AuthProvider extends ChangeNotifier {
       SnackBarMessage().showErrorSnackBar(message: message, context: navigatorKey.currentState!.context);
     }, (user) {
       userModel = user;
-      SnackBarMessage().showSuccessSnackBar(message: 'success signup', context: navigatorKey.currentState!.context);
-       /* pushAndRemoveUntil(navigatorKey.currentState!.context,
-              const StudentHomeScreen(), false); */
+      //SnackBarMessage().showSuccessSnackBar(message: 'success signup', context: navigatorKey.currentState!.context);
+       pushAndRemoveUntil(navigatorKey.currentState!.context,
+              const HomeScreen(), false);
     });
     loading = false;
   }
@@ -89,8 +91,8 @@ class AuthProvider extends ChangeNotifier {
         await getUserDataUseCase();
 
     failureOrUser.fold((failure) {
-      String message = _mapFailureToMessage(failure);
-      SnackBarMessage().showErrorSnackBar(message: message, context: navigatorKey.currentState!.context);
+      //String message = _mapFailureToMessage(failure);
+      //SnackBarMessage().showErrorSnackBar(message: message, context: navigatorKey.currentState!.context);
     }, (user) {
       userModel = user;
        
@@ -112,8 +114,8 @@ class AuthProvider extends ChangeNotifier {
       SnackBarMessage().showErrorSnackBar(message: message, context: navigatorKey.currentState!.context);
     }, (_) {
       
-       /* pushAndRemoveUntil(navigatorKey.currentState!.context,
-              const StudentHomeScreen(), false); */
+       pushAndRemoveUntil(
+                navigatorKey.currentState!.context, const LoginPage(),false);
     });
   }
 

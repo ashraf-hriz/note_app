@@ -26,7 +26,7 @@ class MyIconButton extends StatelessWidget {
               ? Icon(icon, color: Colors.white)
               : Text(
                   txt,
-                  style: ThemeHelper.titleTextStyle.copyWith(fontSize: 18),
+                  style: ThemeHelper.titleTextStyle.copyWith(fontSize: 18,color: Colors.white),
                 ),
         ),
       ),

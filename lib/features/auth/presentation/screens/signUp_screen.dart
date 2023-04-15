@@ -90,11 +90,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ThemeHelper.buttonBoxDecoration(context),
                             child: ElevatedButton(
                               style: ThemeHelper.buttonStyle(),
+                              onPressed: authProvider.loading
+                                  ? null
+                                  : () {
+                                      if (authProvider
+                                          .signUpFormKey.currentState!
+                                          .validate()) {
+                                        authProvider.signUp();
+                                      }
+                                    },
                               child: Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(40, 10, 40, 10),
                                 child: Text(
-                                  "Register".toUpperCase(),
+                                  authProvider.loading
+                                      ? '. . . .'
+                                      : "Register".toUpperCase(),
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -102,12 +113,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                               ),
-                              onPressed: () {
-                                if (authProvider.signUpFormKey.currentState!
-                                    .validate()) {
-                                  authProvider.signUp();
-                                }
-                              },
                             ),
                           ),
                           const SizedBox(height: 30.0),

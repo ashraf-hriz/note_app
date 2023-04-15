@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/helper.dart';
 import '../../domain/entities/note_entity.dart';
+import '../screens/note_detailed_screen.dart';
 
 enum TileType {
   square,
@@ -24,10 +26,8 @@ class NoteTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        /* Get.to(
-          () => NoteDetailPage(note: note),
-          transition: Transition.leftToRight,
-        ); */
+       
+        push(context,NoteDetailScreen(note: note,));
       },
       child: Container(
         // margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),

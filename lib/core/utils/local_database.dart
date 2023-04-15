@@ -14,18 +14,18 @@ class DBHelper {
       _db =
           await openDatabase(path, version: _version, onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE $_tablename(id INTEGER PRIMARY KEY , title STRING, note TEXT, date STRING)",
+          "CREATE TABLE $_tablename(id STRING PRIMARY KEY , title STRING, note TEXT, date STRING)",
         );
       });
     } catch (e) {}
   }
 
   static Future<int> insert(NoteModel note) async {
-    return await _db!.insert(_tablename, note.toJson());
+    return await _db!.insert(_tablename, note.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<int> delete(NoteModel note) async {
-    return await _db!.delete(_tablename, where: 'id = ?', whereArgs: [note.id]);
+  static Future<int> delete(String noteId) async {
+    return await _db!.delete(_tablename, where: 'id = ?', whereArgs: [noteId]);
   }
 
   static Future<List<Map<String, dynamic>>> query() async {
@@ -38,4 +38,5 @@ class DBHelper {
       [note.title, note.text, note.id],
     );
   }
+
 }

@@ -142,7 +142,7 @@ class ThemeHelper {
   );
 
   static TextStyle dateTextStyle = GoogleFonts.lato(
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: FontWeight.w400,
     color: Colors.grey,
   );
