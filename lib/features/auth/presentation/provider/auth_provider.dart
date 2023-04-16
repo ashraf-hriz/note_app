@@ -38,7 +38,7 @@ class AuthProvider extends ChangeNotifier {
   });
 
   UserEntity? userModel;
-  bool _loading = true;
+  bool _loading = false;
 
   bool get loading => _loading;
 
